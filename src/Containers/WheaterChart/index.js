@@ -3,7 +3,6 @@ import ReactApexChart from 'react-apexcharts'
 import HelpersGeneral  from '../../Helpers/GeneralHelpers';
 
 const WheaterChart = (props) => {
-  console.log("props", props);
 
   const wheaterData = props?.props;
   const cityName = wheaterData?.city_name;
@@ -17,8 +16,8 @@ const WheaterChart = (props) => {
   }); 
   
   var chartDate = wheaterData.data.map(function(x){
-    return  HelpersGeneral.getChartDate(x.datetime)
-  }); 
+     return  HelpersGeneral.getChartDate(x.datetime)
+   }); 
 
     var options = {
         series: [

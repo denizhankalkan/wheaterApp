@@ -1,25 +1,24 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import "./index.css";
-// import search from "../../Assets/Icons/Svg"
+import search from "../../Assets/Icons/Svg/searchIcon.svg"
 
 const Form = props => {
   return (
-    <div className="container h-100">
+    <div>
       <form onSubmit={props.loadweather}>
         <div>{props.error ? error() : ""}</div>
         <div className="row">
-          <div className="col-md-3 offset-md-2">
+          <div>
             <input
               type="text"
-              className="form-control"
+              className="input-1"
               placeholder="City"
               name="city"
-              autoComplete="off"
+              autoComplete="off"        
             >    
             </input>
-          </div>
-          <div className="col-md-3 mt-md-0 mt-2 text-md-left ">
-            <button className="btn btn-warning">Get Weather</button>
+            <button type="submit" className="search-button"><img src={search} style={{marginBottom: '-5px'}}></img></button>    
           </div>
         </div>
       </form>

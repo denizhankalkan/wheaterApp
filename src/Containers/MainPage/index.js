@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import ReactApexChart from '../WheaterChart/index'
 import WheatherCard from '../../Components/WheatherCard/index';
@@ -7,32 +7,20 @@ import HelpersGeneral  from '../../Helpers/GeneralHelpers';
 import CustomIcons from '../../Helpers/CustomIcons';
 import ErrorPage from "../ErrorPage/index";
 import './index.css';
+import EmptyPage from '../EmptyPage';
 
 const MainPage = (props) => {
-    const [cityTemp, setCityTemp] = React.useState('');
-    const [cityName, setCityName] = React.useState('');
-    const [error, setError] = React.useState(false);
+    const [tempData, setTempData] = useState('');
+    const [cityName, setCityName] = useState('');
+    const [error, setError] = useState(false);
 
     useEffect(() => {
        if(cityName !== ''){
         axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${cityName}&key=66ac06ac93b44233a62d426c2280554a`).then(response => {
-          setCityTemp(response.data);
-          console.log("response", response)   
+          setTempData(response);
         });
        } 
       }, [cityName]);
-
-  const handleSubmit = event => {
-    console.log("values", event);
-    event.preventDefault();
-   
-   setTimeout(() => {
-    
-   }, 3000)
- }
-
-const handleChange = () => {
-}
 
   const getWeather = async e => {
     e.preventDefault();
@@ -55,30 +43,35 @@ return(
 
    <div> 
      <Form loadweather={getWeather} error={error} />
-        {cityTemp !== '' ?  (
+        {tempData.data !== '' && tempData !== '' ? (
            <>     
             <div className="div-main-2">
               <div>
                     <ReactApexChart
-                      props={cityTemp} />
+                     props={tempData?.data} />
               </div>            
                   <div style={{marginLeft: 70}}>
                       <WheatherCard
-                        cityName={cityTemp?.city_name}
+                        cityName={tempData?.data?.city_name}
                         icon={<CustomIcons
                           outOfMenu={true}
-                          icon={cityTemp?.data[0]?.weather.icon}
-                          alt={cityTemp?.data[0]?.weather.icon} />}
-                          temp={Math.round(cityTemp?.data[0]?.temp) + "C°"}
-                          tempDesc={cityTemp?.data[0]?.weather.description}
-                          date={HelpersGeneral.getChartDate(cityTemp?.data[0].datetime)} />
+                          icon={tempData?.data?.data[0]?.weather.icon}
+                          alt={tempData?.data?.data[0]?.weather.icon} />}
+                          temp={Math.round(tempData?.data?.data[0]?.temp) + "C°"}
+                          tempDesc={tempData?.data?.data[0]?.weather.description}
+                          date={HelpersGeneral.getChartDate(tempData?.data?.data[0].datetime)} 
+                          />
                     </div>
                    </div>
                  </>
               ) : (
-              <ErrorPage/>
-                  )}
-           </div>
+              tempData.data === "" ? (
+                <ErrorPage/>
+              ) : (
+                <EmptyPage/>
+              )
+                )}
+       </div>
     </div>
   </>
   )

@@ -5,9 +5,9 @@ import './index.css';
 const WheatherCard = (props) => {
     const { date, tempDesc, temp, cityName, icon } = props;
 
- return(
-     <>
-     <div className="Card">
+return(
+<>
+ <div className="Card">
 
 <div style={{marginTop: 50}}>
   <div>
